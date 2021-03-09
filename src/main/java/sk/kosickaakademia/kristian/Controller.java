@@ -1,8 +1,10 @@
 package sk.kosickaakademia.kristian;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.json.*;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -21,5 +23,18 @@ public class Controller {
 
     @RequestMapping("/hi/{username}")
     public String getHi(@PathVariable String username) { return "Hello there " + username; }
+
+    @RequestMapping(path = "/data", method = RequestMethod.POST)
+    public String getData(@RequestBody String name) throws ParseException {
+        JSONParser parser = new JSONParser();
+        JSONObject object = (JSONObject) parser.parse(name);
+
+        return "Hello there! " + object.get("username");
+    }
+
+//    @RequestMapping ("/user/id/{id}")
+//    public String getUserById(@PathVariable String id) {
+//
+//    }
 
 }
