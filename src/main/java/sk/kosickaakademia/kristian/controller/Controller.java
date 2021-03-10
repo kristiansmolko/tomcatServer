@@ -1,4 +1,4 @@
-package sk.kosickaakademia.kristian;
+package sk.kosickaakademia.kristian.controller;
 
 import org.json.*;
 import org.json.simple.JSONObject;
@@ -23,6 +23,9 @@ public class Controller {
 
     @RequestMapping("/hi/{username}")
     public String getHi(@PathVariable String username) { return "Hello there " + username; }
+
+    @RequestMapping(path = "/", method = RequestMethod.GET)
+    public String getRoot() { return "I am groot"; }
 
     @RequestMapping(path = "/data", method = RequestMethod.POST)
     public String getData(@RequestBody String name) throws ParseException {
