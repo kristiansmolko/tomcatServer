@@ -6,10 +6,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sk.kosickaakademia.kristian.database.Database;
 
 import java.io.IOException;
@@ -61,7 +58,7 @@ public class JokeController {
     @GetMapping("/joke/{id}")
     public ResponseEntity<String> getJokeById(@PathVariable Integer id){
         List<String> list = getListOfJokes();
-        if (id < 0 || id > list.size()){
+        if (id <= 0 || id > list.size()){
             JSONObject error = new JSONObject();
             error.put("error", "Wrong index");
             return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).body(error.toJSONString());
@@ -69,7 +66,7 @@ public class JokeController {
         JSONObject object = new JSONObject();
         for (int i = 0; i < list.size(); i++){
             if (i == id-1)
-                object.put(i, list.get(i));
+                object.put(id, list.get(i));
         }
         return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(object.toJSONString());
     }
@@ -83,7 +80,7 @@ public class JokeController {
         return getJokeById(random);
     }
 
-    @GetMapping("add")
+    @PostMapping("/add")
     public ResponseEntity<String> addJoke(@RequestBody String input){
         if (input.equals("") || input == null){
             JSONObject response = new JSONObject();
@@ -100,11 +97,13 @@ public class JokeController {
                 ps.setString(1, joke);
                 if (ps.executeUpdate() == 1)
                     response.put("info", "Added joke");
-                else
+                else {
                     response.put("error", "Error adding joke");
+                    return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).body(response.toJSONString());
+                }
             }
         } catch (Exception e) { e.printStackTrace(); }
-        return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(response.toJSONString());
+        return ResponseEntity.status(201).contentType(MediaType.APPLICATION_JSON).body(response.toJSONString());
 
 
 
