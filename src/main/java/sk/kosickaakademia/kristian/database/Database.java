@@ -12,9 +12,9 @@ public class Database {
         Properties prop = new Properties();
         InputStream loader = getClass().getClassLoader().getResourceAsStream("dat.properties");
         prop.load(loader);
-        String url = prop.getProperty("url");
-        String user = prop.getProperty("name");
-        String pass = prop.getProperty("password");
+        String url = "jdbc:mysql://localhost:3306/jokes";//prop.getProperty("url");
+        String user = "root";//prop.getProperty("name");
+        String pass = "";//prop.getProperty("password");
         Connection connection = DriverManager.getConnection(url, user, pass);
         return connection;
     }
