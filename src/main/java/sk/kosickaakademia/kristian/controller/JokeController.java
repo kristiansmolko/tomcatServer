@@ -69,7 +69,7 @@ public class JokeController {
         JSONObject object = new JSONObject();
         for (int i = 0; i < list.size(); i++){
             if (i == id-1)
-                object.put("joke", list.get(i));
+                object.put(i, list.get(i));
         }
         return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(object.toJSONString());
     }
